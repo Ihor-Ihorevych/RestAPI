@@ -18,7 +18,7 @@ namespace RestAPITest
         #region Methods
         static string GetRequest(string url)
         {
-            HttpClient client = new();
+            using HttpClient client = new();
             string result = string.Empty;
             try
             {
@@ -26,8 +26,7 @@ namespace RestAPITest
             }
             catch (HttpRequestException e)
             {
-                Console.WriteLine("Exception!");
-                Console.WriteLine($"{e.Message}");
+                Console.WriteLine($"Exception!\n{e.Message}");
             }
             return result;
         }
@@ -37,43 +36,40 @@ namespace RestAPITest
             Console.ForegroundColor = ConsoleColor.DarkYellow;
             while (true)
             {
-                Console.Clear();
-
-                Console.WriteLine($"1. Make request\n2. Exit");
-                var choice = int.Parse(Console.ReadLine());
-                if (choice == 1)
+                try
                 {
-                    Console.WriteLine("Making request...");
-                    var response = GetRequest(GET_URL);
-                    try
+                    Console.Clear();
+                    Console.WriteLine($"1. Make request\n2. Exit");
+                    var user_choice = int.Parse(Console.ReadLine());
+                    if (user_choice == 1)
                     {
+                        Console.WriteLine("Making request...");
+                        var raw_response = GetRequest(GET_URL);
                         _categories.Clear();
                         _items.Clear();
-                        JObject json = JObject.Parse(response);
+                        JObject json = JObject.Parse(raw_response);
                         foreach (var product in json["Products"])
                         {
-                            var id = Convert.ToInt32(product["Id"]);
-                            var name = product["Name"].ToString();
-                            var catId = Convert.ToInt32(product["CategoryId"]);
-                            _items.Add(new(id, name, catId));
+                            var product_id = Convert.ToInt32(product["Id"]);
+                            var product_name = product["Name"].ToString();
+                            var category_id = Convert.ToInt32(product["CategoryId"]);
+                            _items.Add(new(product_id, product_name, category_id));
                         }
                         foreach (var category in json["Categories"])
-                            _categories[Convert.ToInt32(category["Id"].ToString())] = category["Name"].ToString();
-
+                        {
+                            var category_id = Convert.ToInt32(category["Id"].ToString());
+                            var category_name = category["Name"].ToString();
+                            _categories[category_id] = category_name;
+                        }
                         Console.WriteLine(string.Format("{0,25}\t|\t{1,5}", "Product name", "Category"));
-
                         foreach (var item in _items)
                             Console.WriteLine(string.Format("{0,25}\t|\t{1,2}", $"{item.Name}", $"{_categories[item.CategoryID]}"));
+                        Console.ReadKey();
                     }
-                    catch (Exception)
-                    {
-                        Console.WriteLine("Error occured");
-                    }
-                    Console.ReadKey();
-
+                    else if (user_choice == 2)
+                        Environment.Exit(0);
                 }
-                else if (choice == 2)
-                    Environment.Exit(0);
+                catch { }
             }
         }
     }

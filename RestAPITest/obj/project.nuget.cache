@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "9rlzCuQW2FQ6NJKHnoSY6S+f1ujrHh3VsDHPt3PojPDBCtgAVYx6pRmOulf4qd/D/qzeyCnVd6mHXYtBmuE1kQ==",
+  "dgSpecHash": "5NBC0SThwyM+LgFealqzbKptheV8B+fmMeI+Xed6BazpRFYIOS4CGQWpNtP+LiQNy5h0Nw/ksPEL0ywx3S/WaA==",
   "success": true,
-  "projectFilePath": "C:\\Users\\volos\\source\\repos\\RestAPITest\\RestAPITest\\RestAPITest.csproj",
+  "projectFilePath": "C:\\Users\\volos\\Desktop\\RestAPI\\RestAPITest\\RestAPITest.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\volos\\.nuget\\packages\\newtonsoft.json\\13.0.1\\newtonsoft.json.13.0.1.nupkg.sha512"
   ],
