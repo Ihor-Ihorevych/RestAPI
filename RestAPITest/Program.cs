@@ -8,15 +8,15 @@ namespace RestAPITest
     class Program
     {
         #region Records
-        private record Item(int ID, string Name, int CategoryID);
+        private record Item(int ID, string Name, int CategoryId);
         #endregion
         #region Fields
         private static List<Item> _items = new();
         private static Dictionary<int, string> _categories = new();
-        private const string GET_URL = "http://tester.consimple.pro";
+        private const string REQUEST_URL = "http://tester.consimple.pro";
         #endregion
         #region Methods
-        static string GetRequest(string url)
+        static string RequestJson(string url)
         {
             using HttpClient client = new();
             string result = string.Empty;
@@ -43,8 +43,9 @@ namespace RestAPITest
                     var user_choice = int.Parse(Console.ReadLine());
                     if (user_choice == 1)
                     {
+                        Console.Clear();
                         Console.WriteLine("Making request...");
-                        var raw_response = GetRequest(GET_URL);
+                        var raw_response = RequestJson(REQUEST_URL);
                         _categories.Clear();
                         _items.Clear();
                         JObject json = JObject.Parse(raw_response);
@@ -61,15 +62,14 @@ namespace RestAPITest
                             var category_name = category["Name"].ToString();
                             _categories[category_id] = category_name;
                         }
-                        Console.WriteLine(string.Format("{0,25}\t|\t{1,5}", "Product name", "Category"));
-                        foreach (var item in _items)
-                            Console.WriteLine(string.Format("{0,25}\t|\t{1,2}", $"{item.Name}", $"{_categories[item.CategoryID]}"));
+                        Console.WriteLine($"{"Product name", 25}\t|\t{"Category", 5}");
+                        _items.ForEach(item => Console.WriteLine($"{item.Name, 25}\t|\t{_categories[item.CategoryId], 2}"));
                         Console.ReadKey();
                     }
                     else if (user_choice == 2)
                         Environment.Exit(0);
                 }
-                catch { }
+                catch {}
             }
         }
     }
